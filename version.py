@@ -9,7 +9,9 @@ from subprocess import CalledProcessError, check_output
 version_re = re.compile('^Version: (.+)$', re.M)
 
 def get_version():
-    if isdir(join(dirname(__file__), '.git')):
+    d = dirname(__file__)
+
+    if isdir(join(d, '.git')):
         # Get the version using "git describe".
         cmd = 'git describe --tags --match [0-9]*'.split()
         try:
@@ -24,7 +26,7 @@ def get_version():
 
     else:
         # Extract the version from the PKG-INFO file.
-        with open('PKG-INFO') as f:
+        with open(join(d, 'PKG-INFO')) as f:
             version = version_re.search(f.read()).group(1)
 
     return version
