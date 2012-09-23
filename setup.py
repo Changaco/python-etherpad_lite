@@ -15,5 +15,5 @@ setup(
     url='http://changaco.net/gitweb/?p=python-etherpad_lite.git',
     license='LGPLv3+',
     packages=find_packages(),
-    long_description=open(join(dirname(__file__), 'README')).read(),
+    long_description=open(join(dirname(__file__), 'README.mdwn')).read(),
 )
