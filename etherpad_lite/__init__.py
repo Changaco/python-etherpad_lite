@@ -29,9 +29,9 @@ class EtherpadLiteClient(object):
         self.timeout = timeout
 
     def __call__(self, path, **params):
-        query = urlencode(dict(self.base_params, **params))
-        url = '%s/%i/%s?%s' % (self.base_url, self.api_version, path, query)
-        r = json.loads(urlopen(url, None, self.timeout).read().decode())
+        data = urlencode(dict(self.base_params, **params)).encode('ascii')
+        url = '%s/%i/%s' % (self.base_url, self.api_version, path)
+        r = json.loads(urlopen(url, data, self.timeout).read().decode())
         if not r or not isinstance(r, dict):
             raise EtherpadException('API returned: %s' % r)
         if r.get('code') != 0:
