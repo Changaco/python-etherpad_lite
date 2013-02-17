@@ -6,7 +6,7 @@
 # along with this file, see <http://www.gnu.org/licenses/>.
 
 
-from argparse import Action, ArgumentParser, SUPPRESS
+from argparse import Action, ArgumentParser, ArgumentTypeError, SUPPRESS
 import os
 import shlex
 
@@ -19,7 +19,13 @@ except NameError:
     pass
 
 
-dict_ = lambda l: dict(a.split('=', 1) for a in l)
+def dict_(l):
+    s = [a.split('=', 1) for a in l]
+    e = [a[0] for a in s if len(a) == 1]
+    if e:
+        raise ArgumentTypeError('argument is not of the form "key=value": %s' % e[0])
+    return dict(s)
+
 
 class Dict(Action):
     def __call__(self, parser, namespace, values, option_string=None):
@@ -30,7 +36,11 @@ p.add_argument('-a', '--api-version', default=SUPPRESS)
 p.add_argument('-p', '--base-params', default=SUPPRESS, nargs='*', action=Dict, metavar='key=value')
 p.add_argument('-t', '--timeout', default=SUPPRESS, type=int)
 p.add_argument('-u', '--base-url', default=SUPPRESS)
-args = p.parse_args()
+try:
+    args = p.parse_args()
+except ArgumentTypeError as e:
+    print(e)
+    exit(1)
 
 c = EtherpadLiteClient(**args.__dict__)
 
@@ -45,7 +55,14 @@ while True:
     except (EOFError, KeyboardInterrupt):
         print()
         exit(0)
-    cmd, params = split_line[0], dict_(split_line[1:])
+    if not split_line:
+        continue
+    cmd = split_line[0]
+    try:
+        params = dict_(split_line[1:])
+    except ArgumentTypeError as e:
+        print(e)
+        continue
     try:
         print(c(cmd, **params) or 'ok')
     except EtherpadException as e:
