@@ -26,7 +26,7 @@ class Dict(Action):
         setattr(namespace, self.dest, dict_(values))
 
 p = ArgumentParser()
-p.add_argument('-a', '--api-version', default=SUPPRESS, type=int)
+p.add_argument('-a', '--api-version', default=SUPPRESS)
 p.add_argument('-p', '--base-params', default=SUPPRESS, nargs='*', action=Dict, metavar='key=value')
 p.add_argument('-t', '--timeout', default=SUPPRESS, type=int)
 p.add_argument('-u', '--base-url', default=SUPPRESS)

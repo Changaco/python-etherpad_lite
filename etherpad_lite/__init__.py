@@ -22,7 +22,7 @@ class EtherpadException(Exception): pass
 class EtherpadLiteClient(object):
 
     def __init__(self, base_params={}, base_url='http://localhost:9001/api',
-                       api_version=1, timeout=20):
+                       api_version='1', timeout=20):
         self.api_version = api_version
         self.base_params = base_params
         self.base_url = base_url
@@ -30,7 +30,7 @@ class EtherpadLiteClient(object):
 
     def __call__(self, path, **params):
         data = urlencode(dict(self.base_params, **params)).encode('ascii')
-        url = '%s/%i/%s' % (self.base_url, self.api_version, path)
+        url = '%s/%s/%s' % (self.base_url, self.api_version, path)
         r = json.loads(urlopen(url, data, self.timeout).read().decode('utf-8'))
         if not r or not isinstance(r, dict):
             raise EtherpadException('API returned: %s' % r)
