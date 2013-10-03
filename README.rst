@@ -30,7 +30,7 @@ From the command line::
 	% deletePad padID=test
 	ok
 
-See the documentation of Etherpad Lite (https://github.com/Pita/etherpad-lite) for the list of API functions and their arguments.
+See the documentation of Etherpad Lite for the list of API functions and their arguments.
 
 License
 =======
