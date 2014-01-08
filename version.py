@@ -4,7 +4,7 @@ __all__ = ('get_version')
 
 from os.path import dirname, isdir, join
 import re
-from subprocess import CalledProcessError, check_output
+from subprocess import Popen, PIPE
 
 version_re = re.compile('^Version: (.+)$', re.M)
 
@@ -15,8 +15,11 @@ def get_version():
         # Get the version using "git describe".
         cmd = 'git describe --tags --match [0-9]*'.split()
         try:
-            version = check_output(cmd).decode().strip()
-        except CalledProcessError:
+            proc = Popen(cmd, stdout=PIPE)
+            version = proc.communicate()[0].decode().strip()
+            if proc.returncode != 0:
+                raise OSError()
+        except OSError:
             print('Unable to get version number from git tags')
             exit(1)
 
