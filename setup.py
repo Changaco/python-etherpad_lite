@@ -13,7 +13,7 @@ setup(
     author='Changaco',
     author_email='changaco ατ changaco δοτ net',
     url='http://changaco.net/gitweb/?p=python-etherpad_lite.git',
-    license='LGPLv3+',
+    license='CC0',
     packages=find_packages(),
     long_description=open(join(dirname(__file__), 'README.rst')).read(),
 )

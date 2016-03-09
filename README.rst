@@ -35,4 +35,4 @@ See the documentation of Etherpad Lite for the list of API functions and their a
 License
 =======
 
-LGPLv3+
+`CC0 Public Domain Dedication <http://creativecommons.org/publicdomain/zero/1.0/>`_
