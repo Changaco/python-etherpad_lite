@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import os
 from os.path import join, dirname
 
 from setuptools import setup, find_packages
 
 from version import get_version
+
+os.umask(18)  # octal 022
 
 setup(
     name='etherpad_lite',
