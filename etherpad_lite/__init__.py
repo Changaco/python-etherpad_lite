@@ -1,11 +1,7 @@
 from functools import partial
 import json
-try:
-    from urllib.request import urlopen
-    from urllib.parse import urlencode
-except ImportError:
-    from urllib2 import urlopen
-    from urllib import urlencode
+
+import urllib3
 
 
 def utf8_encode(s):
@@ -21,6 +17,8 @@ class EtherpadException(Exception): pass
 
 class EtherpadLiteClient(object):
 
+    http = urllib3.PoolManager()
+
     def __init__(self, base_params={}, base_url='http://localhost:9001/api',
                        api_version='1', timeout=20):
         self.api_version = api_version
@@ -30,9 +28,10 @@ class EtherpadLiteClient(object):
 
     def __call__(self, path, **params):
         params = utf8_encode_dict_values(params)
-        data = urlencode(dict(self.base_params, **params)).encode('ascii')
+        data = dict(self.base_params, **params)
         url = '%s/%s/%s' % (self.base_url, self.api_version, path)
-        r = json.loads(urlopen(url, data, self.timeout).read().decode('utf-8'))
+        r = self.http.request('POST', url, fields=data, timeout=self.timeout)
+        r = json.loads(r.data.decode('utf-8'))
         if not r or not isinstance(r, dict):
             raise EtherpadException('API returned: %s' % r)
         if r.get('code') != 0:

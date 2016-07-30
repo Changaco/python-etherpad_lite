@@ -19,4 +19,5 @@ setup(
     license='CC0',
     packages=find_packages(),
     long_description=open(join(dirname(__file__), 'README.rst')).read(),
+    install_requires=open(join(dirname(__file__), 'requirements.txt')).read()
 )

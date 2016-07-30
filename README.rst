@@ -7,7 +7,7 @@ Installation
 
 	pip install etherpad_lite
 
-python-etherpad_lite doesn't have dependencies and is compatible with both python 2 and 3.
+python-etherpad_lite depends on 'urllib3' and is compatible with both python 2 and 3.
 
 Usage
 =====
